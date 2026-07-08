@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initCountUp();
   initCursorGlow();
   initScrollScale();
-  initHeroWatch();
+  if (typeof initHeroGlobe === 'function') initHeroGlobe();
 });
 
 function initNav() {
@@ -277,16 +277,3 @@ function initScrollScale() {
   update();
 }
 
-function initHeroWatch() {
-  var mv = document.getElementById('hero-watch-model');
-  if (!mv) return;
-
-  mv.addEventListener('load', function () {
-    var mats = mv.model.materials;
-    mats.forEach(function (m) {
-      m.pbrMetallicRoughness.setBaseColorFactor([0.85, 0.66, 0.34, 1]);
-      m.pbrMetallicRoughness.setMetallicFactor(1);
-      m.pbrMetallicRoughness.setRoughnessFactor(0.22);
-    });
-  });
-}

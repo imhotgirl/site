@@ -7,7 +7,7 @@
 <meta name="description" content="Divine Agency — traffic, продвижение и команда полного цикла для adult creators и агентств.">
 <link rel="icon" href="logo.png" type="image/png">
 <link rel="stylesheet" href="style.css">
-<script type="module" src="modelviewer.js"></script>
+<script src="d3lib.js"></script>
 </head>
 <body>
 <div class="aurora-bg"><div class="aurora-blob"></div></div>
@@ -38,19 +38,9 @@
 
   <section class="hero hero-full">
     <div class="hero-inner container">
-      <div class="hero-watch">
-        <model-viewer
-          id="hero-watch-model"
-          src="watch.glb"
-          auto-rotate
-          rotation-per-second="14deg"
-          camera-orbit="0deg 85deg auto"
-          field-of-view="18deg"
-          disable-zoom
-          interaction-prompt="none"
-          exposure="1.1"
-          shadow-intensity="0">
-        </model-viewer>
+      <div class="hero-globe">
+        <canvas id="hero-globe"></canvas>
+        <span class="hero-globe-hint">Тяните — вращение</span>
       </div>
       <h1>Digital Growth &amp; Traffic Ecosystem <span>for Adult Creators</span></h1>
       <p class="hero-sub">Divine Agency объединяет трафик, стратегию, продвижение и операционную команду — для моделей и агентств, которым нужен системный, предсказуемый рост.</p>
@@ -189,6 +179,7 @@
   </div>
 </footer>
 
+<script src="globe.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
