@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initCountUp();
   initCursorGlow();
   initScrollScale();
+  initHeroWatch();
 });
 
 function initNav() {
@@ -236,8 +237,12 @@ function initCursorGlow() {
 }
 
 function initScrollScale() {
-  var els = document.querySelectorAll('.scroll-scale');
-  if (!els.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var groups = [
+    { els: document.querySelectorAll('.scroll-scale'), min: 0.9, range: 0.14 },
+    { els: document.querySelectorAll('.scroll-scale-strong'), min: 0.8, range: 0.3 }
+  ].filter(function (g) { return g.els.length; });
+
+  if (!groups.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   var ticking = false;
 
@@ -245,14 +250,16 @@ function initScrollScale() {
     var vh = window.innerHeight;
     var viewCenter = vh / 2;
 
-    els.forEach(function (el) {
-      var rect = el.getBoundingClientRect();
-      var elCenter = rect.top + rect.height / 2;
-      var maxDist = viewCenter + rect.height / 2;
-      var dist = Math.min(Math.abs(elCenter - viewCenter), maxDist);
-      var progress = 1 - dist / maxDist;
-      var scale = 0.9 + progress * 0.14;
-      el.style.transform = 'scale(' + scale.toFixed(3) + ')';
+    groups.forEach(function (group) {
+      group.els.forEach(function (el) {
+        var rect = el.getBoundingClientRect();
+        var elCenter = rect.top + rect.height / 2;
+        var maxDist = viewCenter + rect.height / 2;
+        var dist = Math.min(Math.abs(elCenter - viewCenter), maxDist);
+        var progress = 1 - dist / maxDist;
+        var scale = group.min + progress * group.range;
+        el.style.transform = 'scale(' + scale.toFixed(3) + ')';
+      });
     });
 
     ticking = false;
@@ -268,4 +275,18 @@ function initScrollScale() {
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   update();
+}
+
+function initHeroWatch() {
+  var mv = document.getElementById('hero-watch-model');
+  if (!mv) return;
+
+  mv.addEventListener('load', function () {
+    var mats = mv.model.materials;
+    mats.forEach(function (m) {
+      m.pbrMetallicRoughness.setBaseColorFactor([0.85, 0.66, 0.34, 1]);
+      m.pbrMetallicRoughness.setMetallicFactor(1);
+      m.pbrMetallicRoughness.setRoughnessFactor(0.22);
+    });
+  });
 }
